@@ -2,54 +2,59 @@
 
 > A toolkit of AI-powered Claude Code slash commands — built for real-world use.
 
-Claude Code supports custom slash commands (skills) that give Claude a focused persona, live tools, and a structured output format. This repo is a public collection of skills built and used daily.
+Claude Code supports custom slash commands (skills) that give Claude a focused persona, live tools, and a structured output format. This is a public collection of skills built and used daily.
 
 ---
 
 ## Quick Install
 
-**Install a single skill:**
 ```bash
 cp skills/forecast/SKILL.md ~/.claude/commands/forecast.md
 ```
 
-**Install all skills:**
-```bash
-for dir in skills/*/; do
-  name=$(basename "$dir")
-  cp "$dir/SKILL.md" ~/.claude/commands/"$name".md
-done
+Then in any Claude Code session:
 ```
-
-Then invoke in any Claude Code session:
-```
-/forecast "1 week" "AI industry"
+/forecast "1 month" "OpenAI"
+/forecast "Real Madrid"
+/forecast "3 months" "K-pop"
 ```
 
 ---
 
 ## Skills
 
-| Skill | Invocation | Description |
-|-------|-----------|-------------|
-| [/forecast](./skills/forecast/README.md) | `/forecast "[time-horizon]" "[topic]"` | Live-research forecast for any topic — runs 13 adaptive searches, finds the historical parallel, and delivers a sharp Oracle report with causal predictions |
+| Skill | Invocation | What it does |
+|-------|-----------|--------------|
+| [/forecast](./skills/forecast/README.md) | `/forecast "[time-horizon]" "[topic]"` | Oracle-style prediction for any topic — runs 10 adaptive live searches, builds a topic profile, finds the historical parallel, delivers falsifiable predictions with causal chains |
+
+---
+
+## What kind of topics?
+
+Anything. The skill builds the right research strategy per topic instead of applying the same template to everything.
+
+```
+/forecast "1 month" "OpenAI"              # tech
+/forecast "3 months" "Brazilian elections"  # politics
+/forecast "1 season" "anime spring 2026"  # culture
+/forecast "1 month" "Real Madrid"         # sports
+/forecast "1 year" "coral reef bleaching" # science
+/forecast "3 months" "K-pop"              # entertainment
+/forecast "2 weeks" "crypto market"       # finance
+/forecast "5 years" "nuclear energy"      # long-range
+/forecast "1 month" "Joe Rogan"           # just curious
+```
 
 ---
 
 ## How Skills Work
 
-Each skill is a `.md` file in `~/.claude/commands/`. When you type `/skill-name` in Claude Code, the file is loaded as a system prompt and Claude executes it with access to the declared tools.
+Each skill is a `.md` file in `~/.claude/commands/`. When you type `/skill-name` in Claude Code, the file loads as a system prompt and Claude executes it with access to the declared tools.
 
-**Arguments** use positional syntax:
+**Argument syntax** — positional, 0-based:
 - `$0` — first argument
 - `$1` — second argument
 - `$ARGUMENTS` — all arguments as a single string
-
-Example in a skill prompt:
-```
-**Topic:** $1
-**Time Horizon:** $0
-```
 
 ---
 
@@ -58,13 +63,13 @@ Example in a skill prompt:
 ```
 gab0-claude-toolkit/
 ├── .claude/
-│   └── CLAUDE.md              # Claude's instructions for working in this repo
+│   └── CLAUDE.md              # Claude's instructions for this repo
 ├── skills/
 │   └── forecast/
 │       ├── SKILL.md           # The skill prompt
-│       ├── README.md          # Full skill documentation
+│       ├── README.md          # Full documentation
 │       └── examples/
-│           └── sample-output.md   # Annotated example output
+│           └── sample-output.md
 ├── README.md
 ├── CONTRIBUTING.md
 └── LICENSE
