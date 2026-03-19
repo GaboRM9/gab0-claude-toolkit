@@ -75,33 +75,36 @@ The skill runs all research silently. The user sees only the final report, struc
 
 Hidden from the user. Runs in this order:
 
-1. **Date resolution** — determines TODAY, CURRENT_YEAR, LAST_YEAR, NEXT_YEAR dynamically
-2. **Domain detection** — classifies the topic: Business/Markets, Technology/Science, Politics/Geopolitics, Culture/Society, Environment/Health, or Other
-3. **13 searches across 4 tiers:**
-   - Tier 1 (all domains): ground truth, primary news sources, research papers
-   - Tier 2 (all domains): expert forecasts, failed predictions, historical analogues
-   - Tier 3 (domain-adaptive): 4 searches tuned to the detected domain
-   - Tier 4 (all domains): skeptics/critics, disruption signals, cross-domain spillover
-4. **Fetch** the 8 most information-dense pages
-5. **Momentum scoring**: ACCELERATING / STABLE / DECELERATING
-6. **Signal synthesis**: 5 highest-conviction signals with counter-evidence
-7. **Noise exclusion**: 2 prominent-but-irrelevant items identified and excluded
-8. **Historical analogue**: closest parallel from history identified
+1. **Date resolution** — determines TODAY, CURRENT_YEAR, LAST_YEAR, NEXT_YEAR dynamically. No hardcoded years.
+2. **Topic Profile** — before any searching, derives: (a) primary language(s) of authoritative sources, (b) what type of entity produces ground truth for this topic, (c) native vocabulary insiders use, (d) the topic's natural time scale. This profile drives all search query construction.
+3. **Domain classification** — classifies the topic for orientation, but does NOT prescribe query vocabulary. The Topic Profile overrides domain defaults.
+4. **10 adaptive searches:**
+   - Search 1: Ground truth in the topic's own terms and vocabulary
+   - Search 2: Primary authoritative sources — derived per topic and language, not a hardcoded list
+   - Search 3: Expert forward view in native terminology
+   - Search 4: Where observers were wrong (in the community's own terms)
+   - Search 5: Historical parallel
+   - Searches 6–8: 3 signal categories derived from Topic Profile
+   - Search 9: Contrarian case from within the topic's community
+   - Search 10: Most relevant external pressure
+5. **Fetch** the 6 most information-dense pages — in any language
+6. **Momentum scoring**: ACCELERATING / STABLE / DECELERATING (or reframed if trajectory isn't the right model for this topic)
+7. **Signal synthesis**: 5 highest-conviction signals with counter-evidence
+8. **Noise exclusion**: 2 prominent-but-irrelevant items identified and excluded
+9. **Historical analogue**: closest parallel from history, with explicit limits
 
 ---
 
-## Domain-Adaptive Searches
+## Why It's Domain-Agnostic
 
-Tier 3 search queries change based on the detected topic type:
+Previous versions hardcoded specific English-language news sites and query vocabulary (e.g. "overrated," "black swan," "legislation") that only worked for Western anglophone topics. The current version derives everything from a **Topic Profile** computed before any searching:
 
-| Domain | Searches focus on |
-|--------|------------------|
-| Business/Markets | Investment, workforce, regulation, market share |
-| Technology/Science | Breakthroughs, adoption, talent/funding, failure cases |
-| Politics/Geopolitics | Polling, legislation, international reaction, historical precedent |
-| Culture/Society | Audience/reach, cultural impact, backlash, what's replacing it |
-| Environment/Health | Measurements, policy adoption, scientific consensus, tipping points |
-| Other | Momentum, key events, stakeholders, adjacent field spillover |
+- A Brazilian election uses TSE filings and Agência Brasil, not Reuters
+- A manga series checks Oricon sales and Weekly Shonen Jump rankings, not Bloomberg
+- A coral reef forecast fetches NOAA bleaching alerts and IUCN reports, not AP News
+- A Korean pop act searches Hanteo/Gaon charts, not WSJ
+
+The Oracle constructs the right search for the topic — not the same search for every topic.
 
 ---
 
