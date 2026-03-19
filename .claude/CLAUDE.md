@@ -8,12 +8,13 @@ A public portfolio of Claude Code slash commands (skills) built for real-world u
 
 | Skill | Invocation | Description |
 |-------|-----------|-------------|
-| forecast | `/forecast "1 week" "AI industry"` | Predicts the future of any topic using live web research |
+| forecast | `/forecast "1 week" "Mexico"` | Live-research Oracle forecast for any topic — domain-adaptive, causal predictions, historical parallel |
 
 ## Naming Conventions
 
 - All skill folders use **lowercase-hyphenated** names (e.g., `skills/forecast/`, `skills/market-scan/`)
-- SKILL.md is always uppercase
+- `SKILL.md` is always uppercase
+- `README.md` lives at the skill level for documentation
 - Example files go in `examples/` subfolder
 
 ## Skill Structure Requirements
@@ -23,8 +24,9 @@ Every skill must have:
 ```
 skills/<skill-name>/
 ├── SKILL.md              # The prompt file (with frontmatter)
+├── README.md             # Skill documentation
 └── examples/
-    └── sample-output.md  # Example invocation + output description
+    └── sample-output.md  # Annotated example output
 ```
 
 ### Required SKILL.md Frontmatter
@@ -39,13 +41,22 @@ model: opus                           # opus for research-heavy, sonnet for gene
 ---
 ```
 
+### Argument Syntax
+
+Claude Code uses **positional 0-based** argument variables:
+- `$0` — first argument
+- `$1` — second argument
+- `$ARGUMENTS` — all arguments as a single string
+
+Do NOT use `$1`/`$2` (1-based, wrong) or `$ARGUMENTS[0]`/`$ARGUMENTS[1]` (array syntax, not supported).
+
 ## How to Test a Skill Locally
 
 1. Copy the skill's `SKILL.md` to `~/.claude/commands/<skill-name>.md`
 2. Open Claude Code in any project
 3. Invoke with `/skill-name arg1 arg2`
 4. Verify the output matches the expected structure in `examples/sample-output.md`
-5. Delete the file from `~/.claude/commands/` when done testing
+5. Remove from `~/.claude/commands/` when done testing
 
 ## Adding a New Skill
 
